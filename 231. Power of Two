@@ -1,0 +1,49 @@
+Code in C++
+lass Solution {
+public:
+    double soupServings(int n) {
+
+        if (n > 4800) {
+            return 1.0;
+        }
+      
+        
+        int servings = (n + 24) / 25;
+      
+        auto calculateProbability = [&](this auto&& calculateProbability, int servingsA, int servingsB) -> double {
+            
+            if (servingsA <= 0 && servingsB <= 0) {
+                return 0.5;
+            }
+            
+            if (servingsA <= 0) {
+                return 1.0;
+            }
+          
+            if (servingsB <= 0) {
+                return 0.0;
+            }
+          
+            
+            if (memo[servingsA][servingsB] > 0) {
+                return memo[servingsA][servingsB];
+            }
+          
+           
+            double probability = 0.25 * (
+                calculateProbability(servingsA - 4, servingsB) +       // Operation 1
+                calculateProbability(servingsA - 3, servingsB - 1) +   // Operation 2
+                calculateProbability(servingsA - 2, servingsB - 2) +   // Operation 3
+                calculateProbability(servingsA - 1, servingsB - 3)     // Operation 4
+            );
+          
+            
+            memo[servingsA][servingsB] = probability;
+          
+            return probability;
+        };
+      
+        
+        return calculateProbability(servings, servings);
+    }
+};
