@@ -1,0 +1,90 @@
+Code in C++
+class Solution {
+public:
+    int maxLevelSum(TreeNode* root) {
+      
+        queue<TreeNode*> bfsQueue;
+        bfsQueue.push(root);
+      
+        int maxSum = INT_MIN;
+      
+        int levelWithMaxSum = 0;
+      
+       
+        int currentLevel = 0;
+      
+        
+        while (!bfsQueue.empty()) {
+            currentLevel++;
+
+            int currentLevelSum = 0;
+            int nodesInCurrentLevel = bfsQueue.size();
+        
+            for (int i = 0; i < nodesInCurrentLevel; i++) {
+                TreeNode* currentNode = bfsQueue.front();
+                bfsQueue.pop();
+            
+                currentLevelSum += currentNode->val;
+              
+                if (currentNode->left != nullptr) {
+                    bfsQueue.push(currentNode->left);
+                }
+                if (currentNode->right != nullptr) {
+                    bfsQueue.push(currentNode->right);
+                }
+            }
+          
+         
+            if (currentLevelSum > maxSum) {
+                maxSum = currentLevelSum;
+                levelWithMaxSum = currentLevel;
+            }
+        }
+      
+        return levelWithMaxSum;
+    }
+};lass Solution {
+public:
+    int maxLevelSum(TreeNode* root) {
+      
+        queue<TreeNode*> bfsQueue;
+        bfsQueue.push(root);
+      
+        int maxSum = INT_MIN;
+      
+        int levelWithMaxSum = 0;
+      
+       
+        int currentLevel = 0;
+      
+        
+        while (!bfsQueue.empty()) {
+            currentLevel++;
+
+            int currentLevelSum = 0;
+            int nodesInCurrentLevel = bfsQueue.size();
+        
+            for (int i = 0; i < nodesInCurrentLevel; i++) {
+                TreeNode* currentNode = bfsQueue.front();
+                bfsQueue.pop();
+            
+                currentLevelSum += currentNode->val;
+              
+                if (currentNode->left != nullptr) {
+                    bfsQueue.push(currentNode->left);
+                }
+                if (currentNode->right != nullptr) {
+                    bfsQueue.push(currentNode->right);
+                }
+            }
+          
+         
+            if (currentLevelSum > maxSum) {
+                maxSum = currentLevelSum;
+                levelWithMaxSum = currentLevel;
+            }
+        }
+      
+        return levelWithMaxSum;
+    }
+};
