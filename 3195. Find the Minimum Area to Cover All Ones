@@ -1,0 +1,104 @@
+Code in C++
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    int n, m;
+    vector<vector<int>> grid;
+
+    // Compute area of bounding box of 1s in subgrid
+    // rows [r1..r2], cols [c1..c2]
+    // return INF if no 1 exists
+    int area(int r1, int r2, int c1, int c2) {
+        int minr = INT_MAX, maxr = -1, minc = INT_MAX, maxc = -1;
+        for (int i = r1; i <= r2; i++) {
+            for (int j = c1; j <= c2; j++) {
+                if (grid[i][j] == 1) {
+                    minr = min(minr, i);
+                    maxr = max(maxr, i);
+                    minc = min(minc, j);
+                    maxc = max(maxc, j);
+                }
+            }
+        }
+        if (maxr == -1) return INT_MAX; // no 1 found
+        return (maxr - minr + 1) * (maxc - minc + 1);
+    }
+
+    int minimumSum(vector<vector<int>>& g) {
+        grid = g;
+        n = grid.size();
+        m = grid[0].size();
+        int ans = INT_MAX;
+
+        // 1) Three vertical rectangles
+        for (int c1 = 0; c1 < m - 2; c1++) {
+            for (int c2 = c1 + 1; c2 < m - 1; c2++) {
+                int a = area(0, n - 1, 0, c1);
+                int b = area(0, n - 1, c1 + 1, c2);
+                int c = area(0, n - 1, c2 + 1, m - 1);
+                if (a < INT_MAX && b < INT_MAX && c < INT_MAX)
+                    ans = min(ans, a + b + c);
+            }
+        }
+
+        // 2) Three horizontal rectangles
+        for (int r1 = 0; r1 < n - 2; r1++) {
+            for (int r2 = r1 + 1; r2 < n - 1; r2++) {
+                int a = area(0, r1, 0, m - 1);
+                int b = area(r1 + 1, r2, 0, m - 1);
+                int c = area(r2 + 1, n - 1, 0, m - 1);
+                if (a < INT_MAX && b < INT_MAX && c < INT_MAX)
+                    ans = min(ans, a + b + c);
+            }
+        }
+
+        // 3) Vertical then horizontal split on right
+        for (int c = 0; c < m - 1; c++) {
+            for (int r = 0; r < n - 1; r++) {
+                int a = area(0, n - 1, 0, c);
+                int b = area(0, r, c + 1, m - 1);
+                int c2 = area(r + 1, n - 1, c + 1, m - 1);
+                if (a < INT_MAX && b < INT_MAX && c2 < INT_MAX)
+                    ans = min(ans, a + b + c2);
+            }
+        }
+
+        // 4) Vertical then horizontal split on left
+        for (int c = 0; c < m - 1; c++) {
+            for (int r = 0; r < n - 1; r++) {
+                int a = area(0, r, 0, c);
+                int b = area(r + 1, n - 1, 0, c);
+                int c2 = area(0, n - 1, c + 1, m - 1);
+                if (a < INT_MAX && b < INT_MAX && c2 < INT_MAX)
+                    ans = min(ans, a + b + c2);
+            }
+        }
+
+        // 5) Horizontal then vertical split on bottom
+        for (int r = 0; r < n - 1; r++) {
+            for (int c = 0; c < m - 1; c++) {
+                int a = area(0, r, 0, m - 1);
+                int b = area(r + 1, n - 1, 0, c);
+                int c2 = area(r + 1, n - 1, c + 1, m - 1);
+                if (a < INT_MAX && b < INT_MAX && c2 < INT_MAX)
+                    ans = min(ans, a + b + c2);
+            }
+        }
+
+        // 6) Horizontal then vertical split on top
+        for (int r = 0; r < n - 1; r++) {
+            for (int c = 0; c < m - 1; c++) {
+                int a = area(0, r, 0, c);
+                int b = area(0, r, c + 1, m - 1);
+                int c2 = area(r + 1, n - 1, 0, m - 1);
+                if (a < INT_MAX && b < INT_MAX && c2 < INT_MAX)
+                    ans = min(ans, a + b + c2);
+            }
+        }
+
+        return ans;
+    }
+};
+3195. Find the Minimum Area to Cover All Ones I
