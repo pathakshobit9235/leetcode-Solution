@@ -1,0 +1,36 @@
+Code in C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    int maxConsecutiveSpan(vector<int>& bars) {
+        if (bars.empty()) return 1;
+
+        sort(bars.begin(), bars.end());
+
+        int longest = 1;
+        int current = 1;
+
+        for (int i = 1; i < bars.size(); i++) {
+            if (bars[i] == bars[i - 1] + 1) {
+                current++;
+            } else {
+                longest = max(longest, current);
+                current = 1;
+            }
+        }
+        longest = max(longest, current);
+
+        return longest + 1;
+    }
+
+    int maximizeSquareHoleArea(int n, int m, vector<int>& hBars, vector<int>& vBars) {
+        int maxH = maxConsecutiveSpan(hBars);
+        int maxV = maxConsecutiveSpan(vBars);
+
+        int side = min(maxH, maxV);
+        return side * side;
+    }
+};
